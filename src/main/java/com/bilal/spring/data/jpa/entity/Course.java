@@ -3,6 +3,9 @@ package com.bilal.spring.data.jpa.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "Course")
 @Data
 @NoArgsConstructor
@@ -25,7 +28,8 @@ public class Course {
     private Integer credit ;
 
     @OneToOne(
-            mappedBy = "course"
+            mappedBy = "course",
+            optional = false
     )
     private CourseMaterial courseMaterial ;
     @ManyToOne(
@@ -36,5 +40,25 @@ public class Course {
             referencedColumnName = "teacherId"
     )
     private Teacher teacher;
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinTable(
+            name = "students_course_map",
+            joinColumns = @JoinColumn(
+                    name = "course_id",
+                    referencedColumnName = "courseId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "student_id",
+                    referencedColumnName = "studentId"
+            )
+    )
+    private List<Student> students;
 
+    public void addStudents(Student student){
+        if(students == null) students = new ArrayList<>();
+
+        students.add(student);
+    }
 }

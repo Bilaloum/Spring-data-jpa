@@ -1,6 +1,7 @@
 package com.bilal.spring.data.jpa.repository;
 
 import com.bilal.spring.data.jpa.entity.Course;
+import com.bilal.spring.data.jpa.entity.Student;
 import com.bilal.spring.data.jpa.entity.Teacher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,29 @@ class CourseRepositoryTest {
 
         System.out.println("Courses sorted by title: "+coursesByTitle);
         System.out.println("Courses sorted by credit and title descending: "+coursesByCreditAndTitleDescending);
+    }
+
+
+    @Test
+    public void saveCourseWithStudentsAndTeacher(){
+        Teacher teacher = Teacher.builder()
+                .firstName("ihab")
+                .lastName("Annaki")
+                .build();
+        Student student = Student.builder()
+                .firstName("mohammed")
+                .lastName("oumehdi")
+                .emailId("mohammed48@gmail.com")
+                .build();
+
+        Course course = Course.builder()
+                .title("JavaScript")
+                .credit(7)
+                .teacher(teacher)
+                .build();
+
+        course.addStudents(student);
+
+        courseRepository.save(course);
     }
 }
