@@ -1,15 +1,13 @@
 package com.bilal.spring.data.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity
+@Entity(name = "Course")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 public class Course {
     @Id
@@ -26,6 +24,17 @@ public class Course {
     private String title;
     private Integer credit ;
 
-
+    @OneToOne(
+            mappedBy = "course"
+    )
+    private CourseMaterial courseMaterial ;
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "teacher_id",
+            referencedColumnName = "teacherId"
+    )
+    private Teacher teacher;
 
 }

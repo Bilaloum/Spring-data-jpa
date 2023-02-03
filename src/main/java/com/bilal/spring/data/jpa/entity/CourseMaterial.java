@@ -1,16 +1,14 @@
 package com.bilal.spring.data.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "CourseMaterial")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = "course")
 public class CourseMaterial {
     @Id
     @SequenceGenerator(
@@ -24,7 +22,11 @@ public class CourseMaterial {
     )
     private Long courseMaterialId ;
     private String url ;
-    @OneToOne
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            optional = false
+    )
     @JoinColumn(
             name = "course_id",
             referencedColumnName = "courseId"
